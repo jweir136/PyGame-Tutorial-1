@@ -12,6 +12,8 @@ is in space.
 global camera_x; camera_x = 0
 global camera_y; camera_y = 0
 global camera_z; camera_z = 0
+global camera_vertical_angle; camera_vertical_angle = 90
+global camera_horizontal_angle; camera_horizontal_angle = 90
 
 if __name__ == "__main__":
 	while running:
