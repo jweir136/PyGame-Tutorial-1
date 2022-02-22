@@ -34,7 +34,10 @@ class Wireframe(object):
 			else:
 				self._adj_list[str(end)].append(start)
 
-		print(self._adj_list)
+	def addNode(self, x, y, z):
+		newNode = {"x":x,"y":y,"z":z}
+		if not str(newNode) in self.nodes:
+			self.nodes.append(newNode)
 
 if __name__ == "__main__":
 	w = Wireframe(sys.argv[1])
