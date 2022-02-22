@@ -17,10 +17,24 @@ class Wireframe(object):
 		# (1) Look at a list of all the possible nodes
 		with open(filename, "r") as f:
 			data = json.loads(f.read())
-
-		print(data)	
+	
+		self.nodes = data["nodes"]
 		# (2) Add all the edges to the adj list.
-		pass
+		self._adj_list = {}
+
+		for edge in data["edges"]:
+			start = edge["start"]
+			end = edge["end"]
+			if not str(start) in self._adj_list:
+				self._adj_list[str(start)] = [end]
+			else:
+				self._adj_list[str(start)].append(end)
+			if not str(end) in self._adj_list:
+				self._adj_list[str(end)] = [start]
+			else:
+				self._adj_list[str(end)].append(start)
+
+		print(self._adj_list)
 
 if __name__ == "__main__":
 	w = Wireframe(sys.argv[1])
