@@ -19,10 +19,6 @@ class ProjectionViewer:
 
 	def addWireframe(self, name, filename):
 		wireframe = Wireframe.Wireframe(filename)
-		for x in (50,250):
-			for y in (50,250):
-				for z in (50,250):
-					wireframe.addNode(x, y, z)
 		self.wireframes[name] = wireframe
 
 	def display(self):
@@ -52,5 +48,5 @@ class ProjectionViewer:
 
 if __name__ == "__main__":
 	pv = ProjectionViewer(400,300)
-	pv.addWireframe("cube-1", "examples/cube.json")
+	pv.addWireframe("cube-1", "examples/big_cube.json")
 	pv.run()
