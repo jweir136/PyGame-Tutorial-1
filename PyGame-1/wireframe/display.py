@@ -1,6 +1,7 @@
 import Wireframe
 import pygame
 import json
+import math
 
 class ProjectionViewer:
 	# This takes the size of the window
@@ -20,6 +21,12 @@ class ProjectionViewer:
 	def addWireframe(self, name, filename):
 		wireframe = Wireframe.Wireframe(filename)
 		self.wireframes[name] = wireframe
+
+	def rotateAll(self, axis, theta):
+		rotateFunction = 'rotate' + axis
+		for wireframe in self.wireframes:
+			cx, cy, cz = self.wireframes[wireframe].findCenter()
+			getattr(self.wireframes[wireframe], rotateFunction)(cx, cy, cz, theta)
 
 	def display(self):
 		self.screen.fill(self.background)
@@ -61,6 +68,18 @@ class ProjectionViewer:
 					elif event.key == pygame.K_EQUALS:
 						for wireframe in self.wireframes:
 							self.wireframes[wireframe].scale(self.width/2, self.height/2, 1.25)
+					elif event.key == pygame.K_q:
+						self.rotateAll('X', 0.1)
+					elif event.key == pygame.K_w:
+						self.rotateAll('X', -0.1)
+					elif event.key == pygame.K_a:
+						self.rotateAll('Y', 0.1)
+					elif event.key == pygame.K_s:
+						self.rotateAll('Y', -0.1)
+					elif event.key == pygame.K_z:
+						pass
+					elif event.key == pygame.K_x:
+						pass
 
 			self.screen.fill(self.background)
 			self.display()
