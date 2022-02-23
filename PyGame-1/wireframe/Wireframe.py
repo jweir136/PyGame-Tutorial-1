@@ -23,8 +23,9 @@ class Wireframe(object):
 		self._adj_list = {}
 
 		for edge in data["edges"]:
-			start = edge["start"]
-			end = edge["end"]
+			start = self.nodes.index(edge["start"])
+			end = self.nodes.index(edge["end"])
+			
 			if not str(start) in self._adj_list:
 				self._adj_list[str(start)] = [end]
 			else:
@@ -39,5 +40,22 @@ class Wireframe(object):
 		if not str(newNode) in self.nodes:
 			self.nodes.append(newNode)
 
+	def translate(self, axis, d):
+		""" Move the entire object (wireframe) over d units) """
+		if axis in ['x', 'y', 'z']:
+			for node in self.nodes:
+				node[axis] += d
+		else:
+			raise Exception("Invalid Axis")
+
+	def scale(self, centre_x, centre_y, scale):
+		for node in self.nodes:
+			node['x'] = centre_x + scale * (node['x'] - centre_x)
+			node['y'] = centre_y + scale * (node['y'] - centre_y)
+			node['z'] *= scale
+
 if __name__ == "__main__":
 	w = Wireframe(sys.argv[1])
+	w.translate("x", -100)
+	print(w.nodes)
+	print(w._adj_list)
