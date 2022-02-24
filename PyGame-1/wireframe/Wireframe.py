@@ -68,11 +68,9 @@ class Wireframe(object):
 		else:
 			raise Exception("Invalid Axis")
 
-	def scale(self, centre_x, centre_y, scale):
-		for node in self.nodes:
-			node['x'] = centre_x + scale * (node['x'] - centre_x)
-			node['y'] = centre_y + scale * (node['y'] - centre_y)
-			node['z'] *= scale
+	def scale(self, scale):
+		matrix = np.array([scale, 0, 0, 0, 0, scale, 0, 0, 0, 0, scale, 0, 0, 0, 0, 1]).reshape(4, 4)
+		self.nodes = np.dot(self.nodes, matrix)
 	
 	def findCenter(self):
 		""" Find center of object """

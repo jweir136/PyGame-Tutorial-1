@@ -64,10 +64,10 @@ class ProjectionViewer:
 							self.wireframes[wireframe].translate("y", 10)
 					elif event.key == pygame.K_MINUS:
 						for wireframe in self.wireframes:
-							self.wireframes[wireframe].scale(self.width/2, self.height/2, 0.8)
+							self.wireframes[wireframe].scale(0.8)
 					elif event.key == pygame.K_EQUALS:
 						for wireframe in self.wireframes:
-							self.wireframes[wireframe].scale(self.width/2, self.height/2, 1.25)
+							self.wireframes[wireframe].scale(1.25)
 					elif event.key == pygame.K_q:
 						self.rotateAll('X', 0.1)
 					elif event.key == pygame.K_w:
