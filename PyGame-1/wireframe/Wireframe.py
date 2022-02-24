@@ -12,6 +12,7 @@ An input file is a JSON file. It has the following sections
 import json
 import sys
 import math
+import numpy as np
 
 class Wireframe(object):
 	def __init__(self, filename):
@@ -19,13 +20,13 @@ class Wireframe(object):
 		with open(filename, "r") as f:
 			data = json.loads(f.read())
 	
-		self.nodes = data["nodes"]
+		nodes = data["nodes"]
 		# (2) Add all the edges to the adj list.
 		self._adj_list = {}
 
 		for edge in data["edges"]:
-			start = self.nodes.index(edge["start"])
-			end = self.nodes.index(edge["end"])
+			start = nodes.index(edge["start"])
+			end = nodes.index(edge["end"])
 			
 			if not str(start) in self._adj_list:
 				self._adj_list[str(start)] = [end]
@@ -35,17 +36,35 @@ class Wireframe(object):
 				self._adj_list[str(end)] = [start]
 			else:
 				self._adj_list[str(end)].append(start)
+		self.nodes = np.zeros((len(nodes), 4))
+		for i in range(len(nodes)):
+			self.nodes[i,0] = nodes[i]["x"]
+			self.nodes[i,1] = nodes[i]["y"]
+			self.nodes[i,2] = nodes[i]["z"]
+			self.nodes[i,3] = 1
+
+		del nodes
 
 	def addNode(self, x, y, z):
-		newNode = {"x":x,"y":y,"z":z}
-		if not str(newNode) in self.nodes:
-			self.nodes.append(newNode)
+		self.nodes = np.vstack([self.nodes, [x,y,z]])
 
 	def translate(self, axis, d):
 		""" Move the entire object (wireframe) over d units) """
 		if axis in ['x', 'y', 'z']:
-			for node in self.nodes:
-				node[axis] += d
+			if axis == 'x':
+				dx = d
+				dy = 0
+				dz = 0
+			if axis == 'y':
+				dx = 0
+				dy = d
+				dz = 0
+			if axis == 'z':
+				dx = 0
+				dy = 0
+				dz = d
+			matrix = np.array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, dx, dy, dz, 1]).reshape(4,4)
+			self.nodes = np.dot(self.nodes, matrix)
 		else:
 			raise Exception("Invalid Axis")
 
@@ -92,6 +111,5 @@ class Wireframe(object):
 
 if __name__ == "__main__":
 	w = Wireframe(sys.argv[1])
-	w.translate("x", -100)
 	print(w.nodes)
 	print(w._adj_list)
