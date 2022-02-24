@@ -87,6 +87,8 @@ class ProjectionViewer:
 			
 
 if __name__ == "__main__":
-	pv = ProjectionViewer(400,300)
-	pv.addWireframe("cube-1", "examples/big_cube.json")
+	pv = ProjectionViewer(4000,3000)
+	for i in range(100000):
+		pv.addWireframe("cube-{}".format(i), "examples/big_cube.json")
+		pv.wireframes["cube-{}".format(i)].translate('x', i*10)
 	pv.run()
