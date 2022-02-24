@@ -82,32 +82,23 @@ class Wireframe(object):
 		meanZ = sum([node['z'] for node in self.nodes]) / num_nodes
 		return (meanX, meanY, meanZ)
 
-	def rotateZ(self, cx, cy, cz, radians):
-		for node in self.nodes:
-			x = node['x'] - cx
-			y = node['y'] - cy
-			d = math.hypot(y, x)
-			theta = math.atan2(y, x) + radians
-			node['x'] = cx + d * math.cos(theta)
-			node['y'] = cy + d * math.sin(theta)
+	def rotateZ(self, radians):
+		c = np.cos(radians)
+		s = np.sin(radians)
+		matrix = np.array([c, -s, 0, 0, s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]).reshape(4, 4)
+		self.nodes = np.dot(self.nodes, matrix)
 
-	def rotateX(self, cx, cy, cz, radians):
-		for node in self.nodes:
-			y = node['y'] - cx
-			z = node['z'] - cz
-			d = math.hypot(y, z)
-			theta = math.atan2(y, z) + radians
-			node['z'] = cz + d * math.cos(theta)
-			node['y'] = cy + d * math.sin(theta)
+	def rotateX(self, radians):
+		c = np.cos(radians)
+		s = np.sin(radians)
+		matrix = np.array([1, 0, 0, 0, 0, c, -s, 0, 0, s, c, 0, 0, 0, 0, 1]).reshape(4, 4)
+		self.nodes = np.dot(self.nodes, matrix)
 
-	def rotateY(self, cx, cy, cz, radians):
-		for node in self.nodes:
-			x = node['x'] - cx
-			z = node['z'] - cz
-			d = math.hypot(x, z)
-			theta = math.atan2(x, z) + radians
-			node['z'] = cz + d * math.cos(theta)
-			node['x'] = cx + d * math.sin(theta)
+	def rotateY(self, radians):
+		c = np.cos(radians)
+		s = np.sin(radians)
+		matrix = np.array([c, 0, s, 0, 0, 1, 0, 0, -s, 0, c, 0, 0, 0, 0, 1]).reshape(4, 4)
+		self.nodes = np.dot(self.nodes, matrix)
 
 if __name__ == "__main__":
 	w = Wireframe(sys.argv[1])

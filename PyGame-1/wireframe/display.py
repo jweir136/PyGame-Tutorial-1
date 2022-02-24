@@ -26,8 +26,7 @@ class ProjectionViewer:
 	def rotateAll(self, axis, theta):
 		rotateFunction = 'rotate' + axis
 		for wireframe in self.wireframes:
-			cx, cy, cz = self.wireframes[wireframe].findCenter()
-			getattr(self.wireframes[wireframe], rotateFunction)(cx, cy, cz, theta)
+			getattr(self.wireframes[wireframe], rotateFunction)(theta)
 
 	def display(self):
 		self.screen.fill(self.background)
